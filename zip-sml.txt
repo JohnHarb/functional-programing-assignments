@@ -1,0 +1,49 @@
+fun zip (_, nil) = nil
+|   zip (nil, _) = nil
+|   zip(a::b, c::d) = (a,c) :: zip(b, d);
+
+fun unzip (nil) = (nil, nil)
+|   unzip ((a,b) :: rest) =
+    let
+    val (c,d) = unzip(rest)
+    in
+    (a::c, b::d)
+    end;
+    
+fun zip3 (nil,_,_) = nil
+|   zip3 (_,nil,_) = nil
+|   zip3 (_,_,nil) = nil
+|   zip3 (a::b, c::d, e::f) = (a,c,e) :: zip3(b, d, f);
+
+fun unzip3 (nil) = (nil, nil, nil)
+|   unzip3 ((a, b, c) :: rest) =
+    let 
+    val (d, e, f) = unzip3(rest)
+    in
+    (a::d, b::e, c::f)
+    end;
+    
+fun zipWithIndex(b) =
+    let
+    fun loop (nil, _) = nil
+    |   loop (a::b, c) = (c, a) :: loop(b, c+1)
+    in
+    loop (b, 0)
+    end;
+    
+fun flatten(nil) = nil
+|   flatten (a::b) =
+    let 
+    fun loop (nil) = nil
+    |   loop (c::d) = c :: loop(d)
+    in 
+    loop(a) @ flatten(b)
+    end;
+
+fun flatten2(nil) = nil
+|   flatten2((a, b)::c) = a :: b :: flatten2(c);
+
+
+
+
+

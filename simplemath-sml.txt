@@ -1,0 +1,22 @@
+fun gdc (a, 0) = a
+|   gdc (a, b) = gdc (b, a mod b);
+
+fun simplify (a, b) = (a div gdc(a,b), b div gdc(a,b));
+
+fun times ((a,b),(c,d)) = simplify((a*c), (b*d));
+
+fun add ((a, b), (c, d)) = simplify((a)*((b*d) div gdc(b,d) div b) + (c)*((b*d) div gdc(b,d) div d), (b*d) div gdc(b,d));
+
+fun addAll nil = (0,1)
+|   addAll x = add(hd x, addAll(tl x));
+
+fun timesAll nil = (1,1)
+|   timesAll x = times(hd x, timesAll(tl x));
+
+fun lessThan ((a,b),(c,d)) = ((real(a) / real(b))) <= ((real(c) / real(d)));
+
+fun insert (x, []) = [x]
+|   insert (x, L) = if (lessThan(x, hd L)) then x :: L else hd L :: insert(x, tl L);
+
+fun sort nil = nil
+|   sort(x::y) = insert(x, sort y);

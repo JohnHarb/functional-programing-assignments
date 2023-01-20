@@ -1,0 +1,42 @@
+datatype grade = A | B | C | D | F;
+
+fun percent2grade p = 
+    if p >= 90.0 then A
+    else if p >= 80.0 then B
+    else if p >= 70.0 then C
+    else if p >= 60.0 then D
+    else F;
+    
+fun grade2point g = 
+    if g = A then 4.0
+    else if g = B then 3.0
+    else if g = C then 2.0
+    else if g = D then 1.0
+    else 0.0;
+    
+fun gpa r = foldl (op +) 0.0 (map grade2point r) / real(length r);
+
+fun gpaFromPercent r = gpa(map (percent2grade) r);
+
+datatype 'a tree = 
+   Leaf |
+   Node of 'a tree * 'a * 'a tree;
+   
+fun height Leaf = 1
+|   height (Node(l, _, r)) = (if height l > height r then height r else height l) + 1;
+  
+fun isBalanced Leaf = true
+|   isBalanced (Node(l, _, r)) = isBalanced l andalso isBalanced r andalso (height l = height r);
+
+fun size Leaf = 1
+  | size (Node(l, _, r)) = size l + size r + 1;
+
+fun makeBST nil _ = Leaf
+|   makeBST (a::b) f =
+    let
+    fun insertElement (a, Leaf) = Node(Leaf, a, Leaf)
+    |   insertElement (a, Node(l, b, r)) = 
+        if f(a,b) then Node(insertElement(a,l), b, r) else Node(l, b, insertElement(a,r))
+    in
+        insertElement (a, (makeBST b f))
+    end;
